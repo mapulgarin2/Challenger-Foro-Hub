@@ -1,9 +1,6 @@
 package com.challengerforohu.forohub_1.controller;
 
-import com.challengerforohu.forohub_1.topico.DatosListarTopicos;
-import com.challengerforohu.forohub_1.topico.DatosRegistroTopico;
-import com.challengerforohu.forohub_1.topico.Topico;
-import com.challengerforohu.forohub_1.topico.TopicoRepository;
+import com.challengerforohu.forohub_1.topico.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/topicos")
@@ -55,6 +52,44 @@ public class TopicoController {
     public ResponseEntity<Page<DatosListarTopicos>> listarTopicos(@PageableDefault(size = 10,sort = "fechaCreacion")Pageable paginacion) {
         var page = topicoRepository.findAll(paginacion).map(DatosListarTopicos :: new);
         return ResponseEntity.ok(page);
+    }
+
+    @Transactional
+    @PutMapping
+    public ResponseEntity actualizarTopico(@RequestBody @Valid DatosActualizarTopico datos) {
+        Optional<Topico> topicoOptional = topicoRepository.findById(datos.id());
+        if (topicoOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Topico topicoExistente = topicoOptional.get();
+        if (topicoRepository.existsByTituloAndMensaje(datos.Titulo(), datos.Mensaje())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Ya existe un tópico registrado con ese título y mensaje.");
+        }
+        topicoExistente.actualizarInformacionTopico(datos);
+        return ResponseEntity.ok(new DatosDetalleTopico(topicoExistente));
+    }
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity eliminarTopico(@PathVariable Long id) {
+        Optional<Topico> topico = topicoRepository.findById(id);
+        if (topico.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        topicoRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity detallarMedico(@PathVariable Long id) {
+        Optional<Topico> topicoOptional = topicoRepository.findById(id);
+        if (topicoOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Topico topico = topicoOptional.get();
+        return ResponseEntity.ok(new DatosDetalleTopico(topico));
     }
 
 }
