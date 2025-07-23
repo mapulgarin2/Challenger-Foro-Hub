@@ -1,4 +1,4 @@
-package com.challengerforohu.forohub_1.topico;
+package com.challengerforohu.forohub_1.domain.topico;
 
 import java.time.LocalDateTime;
 

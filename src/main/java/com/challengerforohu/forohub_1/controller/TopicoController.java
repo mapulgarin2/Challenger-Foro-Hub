@@ -1,6 +1,6 @@
 package com.challengerforohu.forohub_1.controller;
 
-import com.challengerforohu.forohub_1.topico.*;
+import com.challengerforohu.forohub_1.domain.topico.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

@@ -1,9 +1,6 @@
-package com.challengerforohu.forohub_1.topico;
-
-import jakarta.validation.constraints.NotBlank;
+package com.challengerforohu.forohub_1.domain.topico;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 public record DatosDetalleTopico(
         Long id,

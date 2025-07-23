@@ -1,4 +1,4 @@
-package com.challengerforohu.forohub_1.topico;
+package com.challengerforohu.forohub_1.domain.topico;
 
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.jpa.repository.JpaRepository;
