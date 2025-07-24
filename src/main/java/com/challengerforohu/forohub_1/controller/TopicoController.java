@@ -83,7 +83,7 @@ public class TopicoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity detallarMedico(@PathVariable Long id) {
+    public ResponseEntity detallarTopico(@PathVariable Long id) {
         Optional<Topico> topicoOptional = topicoRepository.findById(id);
         if (topicoOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
